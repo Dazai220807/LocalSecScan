@@ -17,6 +17,15 @@ from utils.display import (
 )
 import sys
 import os
+import shutil
+import platform
+
+def check_nmap():
+    if platform.system() == "Windows":
+        if shutil.which("nmap") is None:
+            webbrowser.open("https://nmap.org/download.html")
+            raise SystemExit("[ERREUR] Nmap n'est pas installé. Télécharge-le depuis la page ouverte.")
+
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -72,6 +81,7 @@ def main():
         pass
 
     print_banner()
+    check_nmap()
     args = parse_arguments()
 
     if args.ip:
