@@ -1,24 +1,22 @@
 import subprocess
 import re
 
-IP_REGEX = re.compile(r"Nmap scan report for (\d+\.\d+\.\d+\.\d+)")
+HOST_REGEX = re.compile(r"Nmap scan report for ([\d\.]+)")
 
-
-def discover_hosts(ip_range):
+def discover_hosts(network):
     """
     Découvre les machines actives sur le réseau via Nmap.
     Retourne une liste d'adresses IP actives.
     """
-
-    hosts = []
-    cmd = ["nmap", "-sn", ip_range]
+    cmd = ["nmap", "-sn", network]
 
     try:
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            timeout=10
         )
     except FileNotFoundError:
         print("[ERREUR] Nmap n'est pas installé sur ce système.")
@@ -26,11 +24,12 @@ def discover_hosts(ip_range):
     except subprocess.CalledProcessError as e:
         print(f"[ERREUR] La commande Nmap a échoué : {e}")
         return []
-
+    
+    hosts = []
     for line in result.stdout.splitlines():
-        match = IP_REGEX.search(line)
+        match = HOST_REGEX.search(line)
         if match:
             hosts.append(match.group(1))
-            
+
     return hosts
 
