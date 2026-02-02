@@ -1,0 +1,25 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Environnements virtuels ---
+venv/
+.env/
+
+# --- Build / Packaging ---
+build/
+dist/
+*.spec
+
+# --- Rapports générés ---
+rapport/*.html
+scan.json
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log

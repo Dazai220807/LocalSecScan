@@ -1,7 +1,7 @@
 import json
+from utils.paths import rapport
 
 def export_json(results, filename):
-    # Conversion des clés de ports en str pour être 100% JSON‑friendly
     serializable = {}
 
     for ip, data in results.items():
@@ -21,8 +21,10 @@ def export_json(results, filename):
     print(f"[OK] Résultats exportés en JSON : {filename}")
 
 
-def export_html(results, filename):
-    # Calcul des stats globales
+
+def export_html(results, filename="rapport.html"):
+    output_path = rapport(filename)
+
     total_hosts = len(results)
     total_vulns = 0
     sev_counts = {"low": 0, "medium": 0, "high": 0, "critical": 0}
@@ -35,12 +37,12 @@ def export_html(results, filename):
             if sev in sev_counts:
                 sev_counts[sev] += 1
 
-    html = f"""
-<!DOCTYPE html>
+    html = f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <title>Rapport LocalSecScan</title>
+
 <style>
 body {{
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
@@ -136,6 +138,7 @@ tr:hover {{
     text-shadow: 0 0 6px rgba(255,0,0,0.6);
 }}
 </style>
+
 </head>
 <body>
 
@@ -169,11 +172,11 @@ tr:hover {{
 </div>
 """
 
+    # Génération des sections hôtes (inchangé)
     for ip, data in results.items():
         html += f"<div class='host'>"
         html += f"<h2>{ip}</h2>"
 
-        # Ports
         html += "<h3>Ports ouverts</h3>"
         if data.get("ports"):
             html += "<table><tr><th>Port</th><th>État</th></tr>"
@@ -183,7 +186,6 @@ tr:hover {{
         else:
             html += "<p>Aucun port ouvert.</p>"
 
-        # Services
         html += "<h3>Services détectés</h3>"
         if data.get("services"):
             html += "<table><tr><th>Port</th><th>Service</th></tr>"
@@ -193,7 +195,6 @@ tr:hover {{
         else:
             html += "<p>Aucun service détecté.</p>"
 
-        # Vulnérabilités
         html += "<h3>Vulnérabilités</h3>"
         if data.get("vulns"):
             html += "<table><tr><th>Port</th><th>Problème</th><th>Gravité</th></tr>"
@@ -212,7 +213,8 @@ tr:hover {{
 
     html += "</body></html>"
 
-    with open(filename, "w", encoding="utf-8") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
 
-    print(f"[OK] Rapport HTML généré : {filename}")
+    print(f"[OK] Rapport HTML généré : {output_path}")
+    return output_path

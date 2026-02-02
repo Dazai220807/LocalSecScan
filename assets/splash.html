@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>LocalSecScan - Chargement</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+h1 {
+    color: #58a6ff;
+    margin-bottom: 30px;
+}
+
+.progress-container {
+    width: 60%;
+    background: #161b22;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #30363d;
+}
+
+.progress-bar {
+    height: 20px;
+    width: 0%;
+    background: linear-gradient(90deg, #238636, #3fb950);
+    transition: width 0.2s ease;
+}
+</style>
+</head>
+<body>
+
+<h1>LocalSecScan</h1>
+
+<div class="progress-container">
+    <div class="progress-bar" id="bar"></div>
+</div>
+
+<script>
+let bar = document.getElementById("bar");
+let progress = 0;
+
+let interval = setInterval(() => {
+    progress += Math.random() * 8; // progression pseudo-aléatoire
+    if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+    }
+    bar.style.width = progress + "%";
+}, 200);
+</script>
+
+</body>
+</html>

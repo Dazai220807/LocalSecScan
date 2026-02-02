@@ -19,6 +19,8 @@ import sys
 import os
 import shutil
 import platform
+from utils.paths import asset, rapport
+
 
 def check_nmap():
     if platform.system() == "Windows":
@@ -27,10 +29,6 @@ def check_nmap():
             raise SystemExit("[ERREUR] Nmap n'est pas installé. Télécharge-le depuis la page ouverte.")
 
 
-def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 def get_local_network():
     gateways = netifaces.gateways()
@@ -62,7 +60,7 @@ def parse_arguments():
     parser.add_argument("--fast", action="store_true", help="Scan rapide")
     parser.add_argument("--verbose", action="store_true", help="Affichage détaillé")
     parser.add_argument("--json", help="Exporter les résultats au format JSON")
-    parser.add_argument("--html", help="Exporter les résultats au format HTML")
+    parser.add_argument("--html", nargs="?", const="rapport.html", help="Exporter les résultats au format HTML")
     return parser.parse_args()
 
 
@@ -76,7 +74,7 @@ def scan_host(host, fast):
 
 def main():
     try:
-        webbrowser.open(resource_path("splash.html"))
+        webbrowser.open(asset("splash.html"))
     except:
         pass
 
@@ -114,14 +112,18 @@ def main():
     if args.json:
         export_json(results, args.json)
 
-    if args.html:
-        export_html(results, args.html)
-        try:
-            webbrowser.open(args.html)
-        except:
-            pass
+    # Si l'utilisateur n'a pas donné de nom, on génère un rapport par défaut
+    html_filename = args.html if args.html else "rapport.html"
 
-    print_vuln_summary(results)
+    html_path = export_html(results, html_filename)
+
+    try:
+        webbrowser.open(html_path)
+    except:
+        pass
+
+
+        print_vuln_summary(results)
 
 
 if __name__ == "__main__":

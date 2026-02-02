@@ -16,7 +16,7 @@ def discover_hosts(network):
             capture_output=True,
             text=True,
             check=True,
-            timeout=10
+            timeout=20
         )
     except FileNotFoundError:
         print("[ERREUR] Nmap n'est pas installé sur ce système.")
