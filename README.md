@@ -1,177 +1,57 @@
 
-# 🛡️ LocalSecScan  
-Scanner réseau local — Détection d’hôtes, ports, services et vulnérabilités
+LocalSecScan
 
----
+Scanner réseau local avec détection de services, analyse de ports et identification de vulnérabilités courantes.
 
-## 🚀 Présentation
+LocalSecScan est un outil de diagnostic réseau conçu pour analyser rapidement un réseau local, identifier les hôtes actifs, détecter les ports ouverts, reconnaître les services exposés et signaler les vulnérabilités potentielles.
+Il s'adresse aux étudiants en cybersécurité, administrateurs système et passionnés souhaitant obtenir une vue d'ensemble claire de leur environnement réseau.
+Fonctionnalités principales
+Découverte du réseau
 
-**LocalSecScan** est un scanner réseau local complet, conçu pour analyser rapidement un réseau, identifier les hôtes actifs, détecter les ports ouverts, reconnaître les services exposés et repérer les vulnérabilités courantes.
+    Détection automatique de la plage réseau locale
 
-Pensé comme un outil pédagogique et professionnel, il combine :
+    Scan ARP rapide pour identifier les hôtes actifs
 
-- une architecture Python modulaire  
-- un rapport HTML premium (dark cyber)  
-- un splash animé  
-- une UX claire et efficace  
-- une détection réseau automatique  
+    Affichage clair et structuré des machines détectées
 
-Ce projet est idéal pour démontrer des compétences en **cybersécurité**, **réseau**, **Python**, **architecture logicielle**, et **UX technique**.
+Analyse des ports
 
----
+    Scan multi‑threadé pour des performances optimales
 
-## ✨ Fonctionnalités
+    Détection des ports ouverts, filtrés ou fermés
 
-### 🔍 Scan réseau
-- Détection automatique du réseau local (gateway + masque)
-- Découverte des hôtes actifs
-- Scan rapide ou complet
+    Couverture des ports critiques (SSH, SMB, RDP, MySQL, Redis, etc.)
 
-### 🔐 Analyse de sécurité
-- Détection des ports ouverts
-- Identification des services exposés
-- Analyse de vulnérabilités basiques (par service/port)
-- Score global par hôte
+Détection des services
 
-### 📊 Rapport HTML premium
-- Dashboard cyber (cartes, couleurs, stats)
-- Liste des hôtes analysés
-- Ports ouverts + services détectés
-- Vulnérabilités classées par sévérité
-- Thème dark moderne
-- Export automatique (`rapport/rapport.html`)
+    Identification des services courants à partir des ports ouverts
 
-### 🎬 Splash animé
-- Barre de progression dynamique
-- Thème cyber cohérent
+    Analyse basique des bannières lorsque disponible
 
-### 🧩 Architecture modulaire
-- `scanner/` → logique réseau, ports, services, vulnérabilités  
-- `utils/` → affichage, export, chemins  
-- `assets/` → splash, icônes  
-- `rapport/` → rapports générés  
+    Détection de services sensibles ou obsolètes
 
----
+Analyse des vulnérabilités
 
-## 🗂️ Structure du projet
+    Base interne de vulnérabilités associées aux ports exposés
 
-```
-LocalSecScan/
-│
-├── scanner/
-│   ├── network_scan.py
-│   ├── port_scan.py
-│   ├── service_scan.py
-│   ├── vuln_checker.py
-│   └── vuln_db.py
-│
-├── utils/
-│   ├── display.py
-│   ├── export.py
-│   └── paths.py
-│
-├── assets/
-│   ├── splash.html
-│   ├── icon.png
-│   └── icon.ico
-│
-├── rapport/
-│   └── rapport.html   (généré automatiquement)
-│
-├── localsecscan.py
-├── requirements.txt
-└── README.md
-```
+    Détection de services non sécurisés (FTP, Telnet, LDAP, SMBv1, etc.)
 
----
+    Détection de versions obsolètes ou vulnérables (Apache, OpenSSH, OpenSSL, etc.)
 
-## 🛠️ Installation
+    Classification par niveau de sévérité (low, medium, high, critical)
 
-### 1) Installer les dépendances
+Export des résultats
 
-```
-pip install -r requirements.txt
-```
+    Export JSON complet
 
-### 2) Installer Nmap (obligatoire)
+    Export HTML avec rapport lisible et structuré
 
-- **Linux** :  
-  ```
-  sudo apt install nmap
-  ```
-- **Windows** :  
-  Téléchargement automatique si non installé.
+    Ouverture automatique du rapport dans le navigateur
 
----
+Interface terminal moderne
 
-## ▶️ Utilisation
+    Barre de progression dynamique
 
-### Scan automatique + rapport HTML (par défaut)
+    Affichage détaillé optionnel
 
-```
-python3 localsecscan.py
-```
-
-### Scan d’une plage IP spécifique
-
-```
-python3 localsecscan.py --ip 192.168.1.0/24
-```
-
-### Scan rapide
-
-```
-python3 localsecscan.py --fast
-```
-
-### Export JSON
-
-```
-python3 localsecscan.py --json resultat.json
-```
-
----
-
-## 📸 Aperçu du rapport HTML
-
-*(Ajoute ici une capture d’écran du rapport pour ton portfolio)*
-
----
-
-## 🧠 Points techniques mis en avant
-
-- Architecture Python modulaire et maintenable  
-- Gestion propre des chemins (compatible PyInstaller)  
-- ThreadPoolExecutor pour paralléliser les scans  
-- Analyse réseau automatique via `netifaces`  
-- Génération HTML dynamique avec dashboard  
-- UX cyber (splash animé, thème dark)  
-- Gestion d’erreurs et fallback propre  
-
----
-
-## 🧭 Roadmap
-
-- [ ] Ajout d’un score de sécurité global  
-- [ ] Graphiques (camemberts, barres) dans le rapport  
-- [ ] Détection avancée (bannières, fingerprinting)  
-- [ ] Export PDF  
-- [ ] Interface graphique (Tkinter / PyQt)  
-- [ ] Mode “audit complet”  
-
----
-
-## 👤 Auteur
-
-**Maël**  
-Étudiant en cybersécurité & développeur Python  
-Portfolio : *(à ajouter)*  
-GitHub : *(ton lien)*
-
----
-
-## 📄 Licence
-
-Projet open‑source — utilisation libre à des fins éducatives et personnelles.
-
----
+    Restauration automatique de l'état du terminal

@@ -4,10 +4,6 @@ import re
 HOST_REGEX = re.compile(r"Nmap scan report for ([\d\.]+)")
 
 def discover_hosts(network):
-    """
-    Découvre les machines actives sur le réseau via Nmap.
-    Retourne une liste d'adresses IP actives.
-    """
     cmd = ["nmap", "-sn", network]
 
     try:
