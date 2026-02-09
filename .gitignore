@@ -8,13 +8,17 @@ __pycache__/
 venv/
 .env/
 
-# --- Build / Packaging ---
+# --- PyInstaller build output ---
 build/
 dist/
 *.spec
 
+# --- Inno Setup output ---
+output/
+release/
+
 # --- Rapports générés ---
-rapport/*.html
+rapport/
 scan.json
 
 # --- OS files ---
@@ -23,3 +27,6 @@ Thumbs.db
 
 # --- Logs ---
 *.log
+
+# --- VSCode ---
+.vscode/

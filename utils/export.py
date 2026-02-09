@@ -1,4 +1,5 @@
 import json
+import os
 from utils.paths import rapport
 
 def export_json(results, filename):
@@ -15,15 +16,21 @@ def export_json(results, filename):
             "vulns": vulns,
         }
 
+    # Création du dossier si nécessaire
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(serializable, f, indent=4, ensure_ascii=False)
 
     print(f"[OK] Résultats exportés en JSON : {filename}")
 
 
-
 def export_html(results, filename="rapport.html"):
-    output_path = rapport(filename)
+    # Nouveau chemin propre : Documents/LocalSecScan/rapport.html
+    base_dir = os.path.join(os.path.expanduser("~"), "Documents", "LocalSecScan")
+    os.makedirs(base_dir, exist_ok=True)
+
+    output_path = os.path.join(base_dir, filename)
 
     total_hosts = len(results)
     total_vulns = 0
@@ -44,6 +51,7 @@ def export_html(results, filename="rapport.html"):
 <title>Rapport LocalSecScan</title>
 
 <style>
+/* (tout ton CSS inchangé) */
 body {{
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background: #0d1117;
@@ -172,7 +180,6 @@ tr:hover {{
 </div>
 """
 
-    # Génération des sections hôtes (inchangé)
     for ip, data in results.items():
         html += f"<div class='host'>"
         html += f"<h2>{ip}</h2>"

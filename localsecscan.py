@@ -7,9 +7,8 @@ import sys
 import os
 import webbrowser
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-import netifaces
-
+import psutil
+import ipaddress
 from scanner.network_scan import discover_hosts
 from scanner.port_scan import scan_ports
 from scanner.service_scan import detect_services
@@ -66,17 +65,18 @@ def ip_to_network(ip, cidr):
     net_int = ip_int & mask
     return ".".join(str((net_int >> (8 * i)) & 0xFF) for i in reversed(range(4)))
 
+
+
 def get_local_network():
-    gateways = netifaces.gateways()
-    iface = gateways['default'][netifaces.AF_INET][1]
-    info = netifaces.ifaddresses(iface)[netifaces.AF_INET][0]
-
-    ip = info['addr']
-    netmask = info['netmask']
-    cidr = mask_to_cidr(netmask)
-    network = ip_to_network(ip, cidr)
-
-    return f"{network}/{cidr}"
+    for iface, addrs in psutil.net_if_addrs().items():
+        for addr in addrs:
+            if addr.family == 2:  # AF_INET
+                ip = addr.address
+                netmask = addr.netmask
+                if ip.startswith("192.") or ip.startswith("10.") or ip.startswith("172."):
+                    network = ipaddress.IPv4Network(f"{ip}/{netmask}", strict=False)
+                    return str(network)
+    return None
 
 
 # ------------------------------
