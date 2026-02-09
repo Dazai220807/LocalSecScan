@@ -13,14 +13,16 @@ Compression=lzma
 SolidCompression=yes
 DisableProgramGroupPage=yes
 ChangesEnvironment=yes
+SetupIconFile=assets\icon.ico
 
 [Files]
 Source: "release\localsecscan.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "assets\icon.ico"; DestDir: "{app}"
 Source: "release\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: "{group}\LocalSecScan"; Filename: "{app}\localsecscan.exe"
-Name: "{commondesktop}\LocalSecScan"; Filename: "{app}\localsecscan.exe"; Tasks: desktopicon
+Name: "{group}\LocalSecScan"; Filename: "{app}\localsecscan.exe"; IconFilename: "{app}\icon.ico"
+Name: "{commondesktop}\LocalSecScan"; Filename: "{app}\localsecscan.exe"; IconFilename: "{app}\icon.ico"; Tasks: desktopicon
 
 [Tasks]
 Name: "desktopicon"; Description: "Créer un raccourci sur le bureau"
@@ -36,7 +38,7 @@ Parameters: "-Command ""Invoke-WebRequest 'https://nmap.org/dist/nmap-7.95-setup
 Flags: runhidden
 
 ; Lancer l'installation normale (interface visible)
-Filename: "{tmp}\nmap.exe"; Flags: shellexec postinstall
+Filename: "{tmp}\nmap.exe"; Flags: shellexec postinstall nowait
 
 ; Lancer LocalSecScan à la fin
 Filename: "{app}\localsecscan.exe"; Flags: nowait postinstall skipifsilent

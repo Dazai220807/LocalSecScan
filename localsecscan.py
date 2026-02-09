@@ -13,6 +13,8 @@ from scanner.network_scan import discover_hosts
 from scanner.port_scan import scan_ports
 from scanner.service_scan import detect_services
 from scanner.vuln_checker import analyze_vulnerabilities
+import psutil
+import ipaddress
 
 from utils.export import export_json, export_html
 from utils.display import (
@@ -66,18 +68,22 @@ def ip_to_network(ip, cidr):
     return ".".join(str((net_int >> (8 * i)) & 0xFF) for i in reversed(range(4)))
 
 
-
 def get_local_network():
+
     for iface, addrs in psutil.net_if_addrs().items():
         for addr in addrs:
-            if addr.family == 2:  # AF_INET
+            if addr.family == 2:  
                 ip = addr.address
                 netmask = addr.netmask
-                if ip.startswith("192.") or ip.startswith("10.") or ip.startswith("172."):
-                    network = ipaddress.IPv4Network(f"{ip}/{netmask}", strict=False)
-                    return str(network)
-    return None
 
+                if ip.startswith(("10.", "172.", "192.168.")):
+                    try:
+                        network = ipaddress.IPv4Network(f"{ip}/{netmask}", strict=False)
+                        return str(network)
+                    except Exception:
+                        pass
+
+    return None
 
 # ------------------------------
 # Argument parsing
